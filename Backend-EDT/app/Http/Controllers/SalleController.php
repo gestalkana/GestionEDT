@@ -8,59 +8,40 @@ use App\Models\Salle;
 
 class SalleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Salle::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom' => 'required|string',
+            'capacite' => 'nullable|integer',
+        ]);
+
+        return Salle::create($request->all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreSalleRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Salle $salle)
     {
-        //
+        return $salle;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Salle $salle)
+    public function update(Request $request, Salle $salle)
     {
-        //
+        $request->validate([
+            'nom' => 'sometimes|string',
+            'capacite' => 'sometimes|integer|nullable',
+        ]);
+
+        $salle->update($request->all());
+        return $salle;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateSalleRequest $request, Salle $salle)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Salle $salle)
     {
-        //
+        $salle->delete();
+        return response()->json(null, 204);
     }
 }

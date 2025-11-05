@@ -8,59 +8,42 @@ use App\Models\Matiere;
 
 class MatiereController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Matiere::with('professeur')->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom' => 'required|string',
+            'duree' => 'required|integer',
+            'professeur_id' => 'required|exists:professeurs,id',
+        ]);
+
+        return Matiere::create($request->all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreMatiereRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Matiere $matiere)
     {
-        //
+        return $matiere->load('professeur');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Matiere $matiere)
+    public function update(Request $request, Matiere $matiere)
     {
-        //
+        $request->validate([
+            'nom' => 'sometimes|string',
+            'duree' => 'sometimes|integer',
+            'professeur_id' => 'sometimes|exists:professeurs,id',
+        ]);
+
+        $matiere->update($request->all());
+        return $matiere;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateMatiereRequest $request, Matiere $matiere)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Matiere $matiere)
     {
-        //
+        $matiere->delete();
+        return response()->json(null, 204);
     }
 }

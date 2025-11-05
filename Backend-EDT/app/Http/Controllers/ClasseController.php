@@ -8,59 +8,40 @@ use App\Models\Classe;
 
 class ClasseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Classe::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom' => 'required|string',
+            'niveau' => 'required|string',
+        ]);
+
+        return Classe::create($request->all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreClasseRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Classe $classe)
     {
-        //
+        return $classe->load('emplois');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Classe $classe)
+    public function update(Request $request, Classe $classe)
     {
-        //
+        $request->validate([
+            'nom' => 'sometimes|string',
+            'niveau' => 'sometimes|string',
+        ]);
+
+        $classe->update($request->all());
+        return $classe;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateClasseRequest $request, Classe $classe)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Classe $classe)
     {
-        //
+        $classe->delete();
+        return response()->json(null, 204);
     }
 }
