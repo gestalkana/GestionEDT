@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Salle extends Model
 {
-    /** @use HasFactory<\Database\Factories\SalleFactory> */
     use HasFactory;
-}
-public function emplois()
-{
-    return $this->hasMany(EmploiDuTemps::class);
+
+    protected $fillable = [
+        'nom',
+        'capacite',
+    ];
+
+    public function emplois()
+    {
+        return $this->hasMany(EmploiDuTemps::class);
+    }
 }

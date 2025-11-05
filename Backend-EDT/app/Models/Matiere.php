@@ -7,15 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Matiere extends Model
 {
-    /** @use HasFactory<\Database\Factories\MatiereFactory> */
     use HasFactory;
-}
-public function professeurs()
-{
-    return $this->hasMany(Professeur::class);
-}
 
-public function emplois()
-{
-    return $this->hasMany(EmploiDuTemps::class);
+    protected $fillable = [
+        'nom',
+        'duree',
+        'professeur_id',
+    ];
+
+    // Cette matière appartient à un professeur
+    public function professeur()
+    {
+        return $this->belongsTo(Professeur::class);
+    }
+
+    // Cette matière peut apparaître dans plusieurs emplois du temps
+    public function emplois()
+    {
+        return $this->hasMany(EmploiDuTemps::class);
+    }
 }

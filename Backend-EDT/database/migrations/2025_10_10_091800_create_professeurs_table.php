@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('professeurs', function (Blueprint $table) {
             $table->id();
+            $table->string('nom');
+            $table->string('email')->unique();
+        //   $table->foreignId('matiere_id')->constrained('matieres')->onDelete('cascade');
             $table->timestamps();
         });
     }
