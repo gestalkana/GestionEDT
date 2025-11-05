@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('emploi_du_temps', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('classe_id')->constrained('classes')->onDelete('cascade');
+            $table->foreignId('professeur_id')->constrained('professeurs')->onDelete('cascade');
+            $table->foreignId('matiere_id')->constrained('matieres')->onDelete('cascade');
+            $table->date('date');
+            $table->time('heure_debut');
+            $table->integer('duree'); // en minutes
             $table->timestamps();
         });
     }

@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('matieres', function (Blueprint $table) {
             $table->id();
+            $table->string('nom');
+            $table->integer('duree'); // durée en minutes
+            // Une matière est enseignée par un professeur
+            $table->foreignId('professeur_id')->constrained('professeurs')->onDelete('cascade');
             $table->timestamps();
         });
     }

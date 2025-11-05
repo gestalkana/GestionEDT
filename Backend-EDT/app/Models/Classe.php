@@ -7,10 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Classe extends Model
 {
-    /** @use HasFactory<\Database\Factories\ClasseFactory> */
     use HasFactory;
-}
-public function emplois()
-{
-    return $this->hasMany(EmploiDuTemps::class);
+
+    protected $fillable = [
+        'nom',
+        'niveau',
+    ];
+
+    // Une classe peut avoir plusieurs séances dans l'emploi du temps
+    public function emplois()
+    {
+        return $this->hasMany(EmploiDuTemps::class);
+    }
 }
