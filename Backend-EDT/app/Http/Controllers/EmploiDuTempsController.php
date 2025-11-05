@@ -8,59 +8,48 @@ use App\Models\EmploiDuTemps;
 
 class EmploiDuTempsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return EmploiDuTemps::with(['classe', 'professeur', 'matiere'])->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'classe_id' => 'required|exists:classes,id',
+            'professeur_id' => 'required|exists:professeurs,id',
+            'matiere_id' => 'required|exists:matieres,id',
+            'date' => 'required|date',
+            'heure_debut' => 'required',
+            'duree' => 'required|integer',
+        ]);
+
+        return EmploiDuTemps::create($request->all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreEmploiDuTempsRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(EmploiDuTemps $emploiDuTemps)
     {
-        //
+        return $emploiDuTemps->load(['classe', 'professeur', 'matiere']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(EmploiDuTemps $emploiDuTemps)
+    public function update(Request $request, EmploiDuTemps $emploiDuTemps)
     {
-        //
+        $request->validate([
+            'classe_id' => 'sometimes|exists:classes,id',
+            'professeur_id' => 'sometimes|exists:professeurs,id',
+            'matiere_id' => 'sometimes|exists:matieres,id',
+            'date' => 'sometimes|date',
+            'heure_debut' => 'sometimes',
+            'duree' => 'sometimes|integer',
+        ]);
+
+        $emploiDuTemps->update($request->all());
+        return $emploiDuTemps;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateEmploiDuTempsRequest $request, EmploiDuTemps $emploiDuTemps)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(EmploiDuTemps $emploiDuTemps)
     {
-        //
+        $emploiDuTemps->delete();
+        return response()->json(null, 204);
     }
 }
